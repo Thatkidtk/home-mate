@@ -1,0 +1,11 @@
+{% macro asset_icon(asset) -%}
+  {% set t = (asset.type or '')|lower %}
+  <i class="bi
+    {% if 'hvac' in t %}bi-wind
+    {% elif 'laundry' in t or 'washer' in t %}bi-droplet
+    {% elif 'fridge' in t or 'refrigerator' in t %}bi-snow
+    {% elif 'plumb' in t or 'pipe' in t %}bi-pipe
+    {% elif 'roof' in t %}bi-house
+    {% else %}bi-tools{% endif %}
+    me-2"></i>
+{%- endmacro %}

@@ -1,0 +1,50 @@
+<div class="table-responsive">
+  <table class="table table-sm align-middle">
+    <thead>
+      {% set next_dir = 'desc' if dir == 'asc' else 'asc' %}
+      <tr>
+        <th scope="col">
+          <a hx-get="{{ url_for('tasks.list_tasks', sort='title', dir=next_dir, status=status, window=window, q=search) }}"
+             hx-target="#task-table" hx-push-url="true" class="text-decoration-none">Title</a>
+        </th>
+        <th scope="col">Asset</th>
+        <th scope="col" class="text-end">
+          <a hx-get="{{ url_for('tasks.list_tasks', sort='due', dir=next_dir, status=status, window=window, q=search) }}"
+             hx-target="#task-table" hx-push-url="true" class="text-decoration-none">Due</a>
+        </th>
+        <th scope="col">Status</th>
+        <th scope="col" class="text-end"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if tasks %}
+        {% for t in tasks %}
+          {% set badge = task_badge(t) %}
+          <tr>
+            <td class="fw-semibold">{{ t.title }}</td>
+            <td>{{ t.asset.name if t.asset else "—" }}</td>
+            <td class="text-end">{{ t.due_date.strftime("%b %d, %Y") if t.due_date else "—" }}</td>
+            <td><span class="badge {{ badge.class }}">{{ badge.label }}</span></td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-secondary me-2" href="{{ url_for('tasks.edit_task', task_id=t.id) }}">Edit</a>
+              {% if t.status != 'done' %}
+                <form method="post" action="{{ url_for('tasks.complete_task', task_id=t.id) }}" class="d-inline">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button type="submit" class="btn btn-sm btn-outline-success me-2">Complete</button>
+                </form>
+              {% endif %}
+              <form method="post" action="{{ url_for('tasks.delete_task', task_id=t.id) }}" class="d-inline" onsubmit="return confirm('Delete task?')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+          <td colspan="5" class="text-secondary py-4 text-center">No tasks match the current filters.</td>
+        </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="col-12 col-lg-8 mx-auto">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h4 mb-0">{{ 'Edit' if asset else 'Create' }} Asset</h1>
+    <a class="btn btn-outline-secondary" href="{{ url_for('assets.list_assets') }}">Back</a>
+  </div>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <form method="post" class="row g-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="col-md-6 form-floating">
+          <input class="form-control" name="name" id="name" placeholder="Name" value="{{ asset.name if asset else '' }}" required>
+          <label for="name">Name</label>
+        </div>
+        <div class="col-md-6 form-floating">
+          <input class="form-control" name="type" id="type" placeholder="Type" value="{{ asset.type if asset else '' }}">
+          <label for="type">Type (home, HVAC, appliance...)</label>
+        </div>
+        <div class="col-md-6 form-floating">
+          <input class="form-control" name="make" id="make" placeholder="Make" value="{{ asset.make if asset else '' }}">
+          <label for="make">Make</label>
+        </div>
+        <div class="col-md-6 form-floating">
+          <input class="form-control" name="model" id="model" placeholder="Model" value="{{ asset.model if asset else '' }}">
+          <label for="model">Model</label>
+        </div>
+        <div class="col-md-6 form-floating">
+          <input class="form-control" name="serial" id="serial" placeholder="Serial" value="{{ asset.serial if asset else '' }}">
+          <label for="serial">Serial</label>
+        </div>
+        <div class="col-md-6 form-floating">
+          <input type="date" class="form-control" name="purchase_date" id="purchase_date" placeholder="Purchase date" value="{{ asset.purchase_date.isoformat() if asset and asset.purchase_date else '' }}">
+          <label for="purchase_date">Purchase date</label>
+        </div>
+        <div class="col-md-6 form-floating">
+          <input type="date" class="form-control" name="warranty_expiration" id="warranty_expiration" placeholder="Warranty expiration" value="{{ asset.warranty_expiration.isoformat() if asset and asset.warranty_expiration else '' }}">
+          <label for="warranty_expiration">Warranty expiration</label>
+        </div>
+        <div class="col-12 form-floating">
+          <textarea class="form-control" name="notes" id="notes" style="height: 120px;" placeholder="Notes">{{ asset.notes if asset else '' }}</textarea>
+          <label for="notes">Notes</label>
+          <div class="form-text">Serials, vendor, receipt location, quirks, etc.</div>
+        </div>
+        <div class="col-12 d-flex gap-2">
+          <button type="submit" class="btn btn-primary">Save</button>
+          <a class="btn btn-outline-secondary" href="{{ url_for('assets.list_assets') }}">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
+  <div>
+    <h1 class="h4 mb-0">Tasks</h1>
+    <p class="text-secondary mb-0">Track what’s due, overdue, and done.</p>
+  </div>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-outline-secondary" href="{{ url_for('tasks.export_tasks') }}"><i class="bi bi-download me-2"></i>Export CSV</a>
+    <a class="btn btn-primary" href="{{ url_for('tasks.create_task') }}"><i class="bi bi-plus-circle me-2"></i>New Task</a>
+  </div>
+</div>
+
+<div class="card shadow-sm mb-3">
+  <div class="card-body d-flex flex-column gap-3">
+    <div class="d-flex flex-wrap gap-2">
+      {% for value, label in [("all","All"), ("open","Open"), ("overdue","Overdue"), ("done","Done")] %}
+        <button
+          class="btn btn-sm {% if status==value or (value=='all' and not status) %}btn-primary{% else %}btn-outline-secondary{% endif %}"
+          hx-get="{{ url_for('tasks.list_tasks', status=value, window=window, sort=sort, dir=dir, q=search) }}"
+          hx-target="#task-table"
+          hx-push-url="true"
+        >{{ label }}</button>
+      {% endfor %}
+    </div>
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      {% for value, label in [("7d","7 days"), ("30d","30 days")] %}
+        <button
+          class="btn btn-sm {% if window==value %}btn-primary{% else %}btn-outline-secondary{% endif %}"
+          hx-get="{{ url_for('tasks.list_tasks', window=value if window!=value else None, status=status, sort=sort, dir=dir, q=search) }}"
+          hx-target="#task-table"
+          hx-push-url="true"
+        >{{ label }}</button>
+      {% endfor %}
+      <div class="ms-auto flex-grow-1" style="min-width:250px;">
+        <input
+          type="search"
+          class="form-control form-control-sm"
+          placeholder="Search tasks..."
+          value="{{ search or '' }}"
+          hx-get="{{ url_for('tasks.list_tasks', status=status, window=window, sort=sort, dir=dir) }}"
+          hx-target="#task-table"
+          hx-trigger="keyup changed delay:250ms"
+          name="q"
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="task-table">
+  {% include "tasks/_table.html" %}
+</div>
+{% endblock %}

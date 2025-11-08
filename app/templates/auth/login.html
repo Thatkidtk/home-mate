@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <article>
+    <h2>Sign in</h2>
+    <form method="post">
+      {{ form.hidden_tag() }}
+      <label>Email
+        {{ form.email(class="form-control") }}
+        {% for error in form.email.errors %}
+          <small class="error">{{ error }}</small>
+        {% endfor %}
+      </label>
+      <label>Password
+        {{ form.password(class="form-control") }}
+        {% for error in form.password.errors %}
+          <small class="error">{{ error }}</small>
+        {% endfor %}
+      </label>
+      <label class="checkbox">
+        {{ form.remember() }} Keep me logged in
+      </label>
+      {{ form.submit(class="primary") }}
+    </form>
+    <p>Need an account? <a href="{{ url_for('auth.register') }}">Register here</a>.</p>
+  </article>
+{% endblock %}

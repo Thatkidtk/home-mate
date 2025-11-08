@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Server Error · Home Maintenance{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+  <h1 class="display-5 mb-3">Something went wrong</h1>
+  <p class="text-secondary">We logged the issue and will look into it. Try going back to the dashboard.</p>
+  <div class="d-flex justify-content-center gap-2 mt-3">
+    <a class="btn btn-primary" href="{{ url_for('main.index') }}">Return home</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('tasks.list_tasks') }}">View tasks</a>
+  </div>
+</div>
+{% endblock %}

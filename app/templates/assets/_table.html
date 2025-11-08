@@ -1,0 +1,40 @@
+{% from "_macros.html" import asset_icon %}
+{% if assets %}
+  <div class="d-flex justify-content-between align-items-center text-secondary small mb-2">
+    Showing {{ assets|length }} item{{ 's' if assets|length != 1 else '' }}
+  </div>
+  <div class="table-responsive">
+    <table class="table table-sm align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Make / Model</th>
+          <th class="text-end"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in assets %}
+          <tr>
+            <td>{{ asset_icon(a) }}{{ a.name }}</td>
+            <td>{{ a.type or "—" }}</td>
+            <td>{{ (a.make or "") ~ (" " if a.make and a.model else "") ~ (a.model or "") }}</td>
+            <td class="text-end">
+              <a class="btn btn-sm btn-outline-secondary me-2" href="{{ url_for('assets.edit_asset', asset_id=a.id) }}">Edit</a>
+              <form method="post" action="{{ url_for('assets.delete_asset', asset_id=a.id) }}" class="d-inline" onsubmit="return confirm('Delete asset?')">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="card shadow-sm">
+    <div class="card-body text-center text-secondary py-5">
+      No assets yet. <a href="{{ url_for('assets.create_asset') }}">Add your first asset</a> to start tracking maintenance.
+    </div>
+  </div>
+{% endif %}

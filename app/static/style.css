@@ -1,0 +1,56 @@
+body {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+main.container {
+  max-width: 1200px;
+}
+
+.kpi-card .display-6 {
+  line-height: 1;
+  margin-top: 0.35rem;
+}
+
+.card {
+  transition: transform 0.12s ease;
+}
+
+.card:hover {
+  transform: translateY(-1px);
+}
+
+.card-body canvas {
+  width: 100% !important;
+  min-height: 240px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--bs-body-bg);
+}
+
+.table-sm th,
+.table-sm td {
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+}
+
+#tasksSpark {
+  min-height: 220px;
+}
+
+@media (max-width: 576px) {
+  .quick-actions .btn {
+    width: 100%;
+  }
+}

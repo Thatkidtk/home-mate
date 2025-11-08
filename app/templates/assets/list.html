@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
+  <div>
+    <h1 class="h4 mb-0">Assets</h1>
+    <p class="text-secondary mb-0">Keep a clean roster of everything that needs love.</p>
+  </div>
+  <a class="btn btn-primary" href="{{ url_for('assets.create_asset') }}"><i class="bi bi-plus-circle me-2"></i>New Asset</a>
+</div>
+
+<div class="card shadow-sm mb-3">
+  <div class="card-body">
+    <div class="row g-2 align-items-center">
+      <form method="get" class="col-sm-6 form-floating">
+        <input
+          type="search"
+          name="q"
+          id="asset-search"
+          class="form-control"
+          placeholder="Search assets"
+          value="{{ q or '' }}"
+          hx-get="{{ url_for('assets.list_assets') }}"
+          hx-target="#assets-table"
+          hx-trigger="keyup changed delay:200ms"
+        >
+        <label for="asset-search">Search assets</label>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="assets-table">
+  {% include "assets/_table.html" %}
+</div>
+{% endblock %}
